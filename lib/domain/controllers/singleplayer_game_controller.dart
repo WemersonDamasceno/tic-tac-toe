@@ -14,17 +14,17 @@ class SinglePlayerController extends GameController {
     VoidCallback? showDialogEndGame,
     bool isInsaneMode = false,
   }) {
-    currentPlayer = currentPlayer == 'X' ? 'O' : 'X';
-
     super.resetGame();
     isTapEnabled = true;
-
+    // Define quem vai começar esse round
+    currentPlayer = nextStartingPlayer;
+    // Alterna para o próximo round
+    nextStartingPlayer = (nextStartingPlayer == 'X') ? 'O' : 'X';
+    // Se for a IA começando, já dispara o movimento dela
     if (currentPlayer == 'O' && context != null && showDialogEndGame != null) {
       Future.delayed(const Duration(milliseconds: 500), () {
         _makeAIMove(context, showDialogEndGame, isInsaneMode);
       });
-    } else {
-      currentPlayer = 'X';
     }
   }
 
@@ -89,7 +89,8 @@ class SinglePlayerController extends GameController {
         notifyListeners(); // Notifica ouvintes para atualizar a interface
 
         // Após 2 segundos, mostra o diálogo de fim de jogo e reseta o jogo
-        Future.delayed(const Duration(seconds: 2), () {
+        Future.delayed(const Duration(seconds: 1), () {
+          showDialogEndGame();
           resetGame(
             context: context,
             showDialogEndGame: showDialogEndGame,
@@ -109,6 +110,8 @@ class SinglePlayerController extends GameController {
 
         // Após 500ms, mostra o diálogo de fim de jogo e reseta o jogo
         Future.delayed(const Duration(milliseconds: 500), () {
+          showDialogEndGame();
+
           resetGame(
             context: context,
             showDialogEndGame: showDialogEndGame,

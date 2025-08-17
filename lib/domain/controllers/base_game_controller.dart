@@ -8,6 +8,7 @@ abstract class GameController extends ChangeNotifier {
   String currentPlayer = 'X';
   String winner = '';
   List<int>? winningLine;
+  String nextStartingPlayer = 'X'; // alterna entre X e O
 
   int qtdWinsPlayer1 = 0;
   int qtdWinsPlayer2 = 0;
