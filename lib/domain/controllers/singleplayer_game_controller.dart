@@ -6,8 +6,33 @@ import 'package:tictactoe/core/constants/app_sounds.dart'; // Importa constantes
 import 'package:tictactoe/domain/controllers/base_game_controller.dart'; // Importa o controlador base do jogo
 
 class SinglePlayerController extends GameController {
-  bool isTapEnabled =
-      true; // Controla se os toques estão habilitados para evitar múltiplos toques simultâneos
+  bool isTapEnabled = true;
+
+  @override
+  void resetGame({
+    BuildContext? context,
+    VoidCallback? showDialogEndGame,
+    bool isInsaneMode = false,
+  }) {
+    currentPlayer = currentPlayer == 'X' ? 'O' : 'X';
+
+    super.resetGame();
+    isTapEnabled = true;
+
+    if (currentPlayer == 'O' && context != null && showDialogEndGame != null) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        _makeAIMove(context, showDialogEndGame, isInsaneMode);
+      });
+    } else {
+      currentPlayer = 'X';
+    }
+  }
+
+  @override
+  void disposeGame() {
+    super.disposeGame();
+    isTapEnabled = true;
+  }
 
   @override
   Future<void> handleTap(
@@ -65,8 +90,11 @@ class SinglePlayerController extends GameController {
 
         // Após 2 segundos, mostra o diálogo de fim de jogo e reseta o jogo
         Future.delayed(const Duration(seconds: 2), () {
-          showDialogEndGame();
-          resetGame();
+          resetGame(
+            context: context,
+            showDialogEndGame: showDialogEndGame,
+            isInsaneMode: isInsaneMode,
+          );
         });
 
         return;
@@ -81,14 +109,16 @@ class SinglePlayerController extends GameController {
 
         // Após 500ms, mostra o diálogo de fim de jogo e reseta o jogo
         Future.delayed(const Duration(milliseconds: 500), () {
-          showDialogEndGame();
-          resetGame();
+          resetGame(
+            context: context,
+            showDialogEndGame: showDialogEndGame,
+            isInsaneMode: isInsaneMode,
+          );
         });
 
         return;
       } else {
-        currentPlayer =
-            currentPlayer == 'X' ? 'O' : 'X'; // Troca o jogador atual
+        currentPlayer = currentPlayer == 'X' ? 'O' : 'X';
       }
 
       // Reabilita os toques após 300ms

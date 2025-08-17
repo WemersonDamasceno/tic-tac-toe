@@ -61,7 +61,7 @@ abstract class GameController extends ChangeNotifier {
 
     moveHistoryX.clear();
     moveHistoryO.clear();
-    currentPlayer = 'X';
+    currentPlayer = currentPlayer == 'X' ? 'O' : 'X';
     winner = '';
     winningLine = null; // Reseta a linha vencedora
   }
