@@ -18,10 +18,10 @@ class SinglePlayerController extends GameController {
     isTapEnabled = true;
     // Define quem vai começar esse round
     currentPlayer = nextStartingPlayer;
-    // Alterna para o próximo round
-    nextStartingPlayer = (nextStartingPlayer == 'X') ? 'O' : 'X';
     // Se for a IA começando, já dispara o movimento dela
-    if (currentPlayer == 'O' && context != null && showDialogEndGame != null) {
+    if (nextStartingPlayer == 'O' &&
+        context != null &&
+        showDialogEndGame != null) {
       Future.delayed(const Duration(milliseconds: 500), () {
         _makeAIMove(context, showDialogEndGame, isInsaneMode);
       });
@@ -55,6 +55,8 @@ class SinglePlayerController extends GameController {
           currentPlayer == 'X' ? moveHistoryX : moveHistoryO;
 
       currentHistory.add(index);
+
+      nextStartingPlayer = (currentPlayer == 'X') ? 'O' : 'X';
 
       // Se estiver no modo insano e o histórico tiver mais de 3 jogadas, remove a jogada mais antiga
       if (isInsaneMode && currentHistory.length > 3) {
