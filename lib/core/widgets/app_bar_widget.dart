@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tictactoe/core/constants/app_colors.dart';
 import 'package:tictactoe/core/constants/app_images.dart';
-import 'package:tictactoe/core/constants/app_routes.dart';
 
 class AppBarWidget extends StatelessWidget {
   const AppBarWidget({super.key});
@@ -28,15 +26,15 @@ class AppBarWidget extends StatelessWidget {
           ),
         ],
       ),
-      actions: [
-        IconButton(
-          onPressed: () => GoRouter.of(context).pushNamed(AppRoutes.challenge),
-          icon: const Icon(
-            Icons.emoji_events,
-            size: 30,
-            color: Colors.yellow,
-          ),
-        ),
+      actions: const [
+        // IconButton(
+        //   onPressed: () => GoRouter.of(context).pushNamed(AppRoutes.challenge),
+        //   icon: const Icon(
+        //     Icons.emoji_events,
+        //     size: 30,
+        //     color: Colors.yellow,
+        //   ),
+        // ),
       ],
     );
   }

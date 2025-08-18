@@ -34,18 +34,13 @@ class MultiPlayerController extends GameController {
           qtdWinsPlayer2++;
         }
 
-        board = List.generate(9, (index) => '');
+        winningLine =
+            getWinningLine(currentPlayer); // <--- pega a linha vencedora
 
-        if (winner == 'X') {
-          moveHistoryO.clear();
-
-          for (int i = 0; i < moveHistoryX.length; i++) {
-            board[moveHistoryX[i]] = 'X';
-          }
-        } else {
-          moveHistoryX.clear();
-          for (int i = 0; i < moveHistoryO.length; i++) {
-            board[moveHistoryO[i]] = 'O';
+        // Apaga todas as peças e mantém apenas as da linha vencedora
+        for (int i = 0; i < board.length; i++) {
+          if (!winningLine!.contains(i)) {
+            board[i] = '';
           }
         }
 
@@ -74,5 +69,33 @@ class MultiPlayerController extends GameController {
 
       notifyListeners();
     }
+  }
+
+  List<int> getWinningLine(String player) {
+    // Todas as combinações possíveis de linhas vencedoras no tabuleiro
+    List<List<int>> winningCombinations = [
+      [0, 1, 2], // Primeira linha
+      [3, 4, 5], // Segunda linha
+      [6, 7, 8], // Terceira linha
+      [0, 3, 6], // Primeira coluna
+      [1, 4, 7], // Segunda coluna
+      [2, 5, 8], // Terceira coluna
+      [0, 4, 8], // Diagonal principal
+      [2, 4, 6], // Diagonal secundária
+    ];
+
+    // Percorre todas as combinações possíveis
+    for (List<int> combination in winningCombinations) {
+      // Verifica se todas as posições na combinação são do jogador atual
+      if (board[combination[0]] == player &&
+          board[combination[1]] == player &&
+          board[combination[2]] == player) {
+        // Retorna a combinação vencedora
+        return combination;
+      }
+    }
+
+    // Se nenhuma combinação vencedora for encontrada, retorna uma lista vazia
+    return [];
   }
 }
