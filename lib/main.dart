@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Tic Tac Toe',
+      title: 'Jogo da Velha',
       theme: ThemeData(
         useMaterial3: true,
         fontFamily: 'Roboto',

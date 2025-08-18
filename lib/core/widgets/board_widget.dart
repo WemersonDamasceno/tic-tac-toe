@@ -40,11 +40,13 @@ class _BoardWidgetState extends State<BoardWidget> with DialogMixin {
               ),
               itemBuilder: (context, index) {
                 final String symbol = widget.gameController.board[index];
-                final bool isOpaque = checkIfOpaque(
-                      symbol: symbol,
-                      index: index,
-                      board: widget.gameController,
-                    ) &&
+                final isOpaqueVerify = checkIfOpaque(
+                  symbol: symbol,
+                  index: index,
+                  board: widget.gameController,
+                );
+                final bool isOpaque = widget.isInsaneMode &&
+                    isOpaqueVerify &&
                     widget.gameController.winner.isEmpty;
 
                 return GestureDetector(
@@ -97,7 +99,8 @@ class _BoardWidgetState extends State<BoardWidget> with DialogMixin {
       List<int> moveHistory =
           symbol == 'X' ? board.moveHistoryX : board.moveHistoryO;
 
-      if (moveHistory.length > 3 && moveHistory[0] == index) {
+      // só opaca se tiver no mínimo 3 peças no board
+      if (moveHistory.length >= 3 && moveHistory.first == index) {
         return true;
       }
     }
