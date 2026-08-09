@@ -110,12 +110,8 @@ void main() {
   group('SinglePlayerController (AI)', () {
     test('IA responde após a jogada do humano', () async {
       final controller = StubSinglePlayerController();
-      controller.resetGame(
-        context: null,
-        showDialogEndGame: () {},
-        isInsaneMode: false,
-      );
 
+      // Rodada 1 começa com o humano (X).
       await controller.handleTap(0, null, () {}, false);
 
       // A IA joga 500ms depois da jogada humana.
@@ -127,17 +123,21 @@ void main() {
       expect(controller.isTapEnabled, isTrue);
     });
 
-    test('alterna quem começa cada round', () {
+    test('alterna quem começa cada round (X, O, X, O...)', () {
       final controller = StubSinglePlayerController();
-      expect(controller.nextStartingPlayer, 'X');
-
-      controller.resetGame();
       expect(controller.currentPlayer, 'X');
-      expect(controller.nextStartingPlayer, 'O');
 
       controller.resetGame();
       expect(controller.currentPlayer, 'O');
-      expect(controller.nextStartingPlayer, 'X');
+      expect(controller.startingPlayer, 'O');
+
+      controller.resetGame();
+      expect(controller.currentPlayer, 'X');
+      expect(controller.startingPlayer, 'X');
+
+      controller.resetGame();
+      expect(controller.currentPlayer, 'O');
+      expect(controller.startingPlayer, 'O');
     });
   });
 }

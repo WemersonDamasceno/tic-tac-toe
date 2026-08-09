@@ -23,7 +23,7 @@ abstract class GameController extends ChangeNotifier {
   String currentPlayer = 'X';
   String winner = '';
   List<int>? winningLine;
-  String nextStartingPlayer = 'X';
+  String startingPlayer = 'X';
   bool isTapEnabled = true;
   int movesMade = 0;
 
@@ -204,7 +204,8 @@ abstract class GameController extends ChangeNotifier {
     movesMade = 0;
     isTapEnabled = true;
 
-    currentPlayer = nextStartingPlayer;
-    nextStartingPlayer = currentPlayer == 'X' ? 'O' : 'X';
+    // Alterna quem inicia a próxima rodada: X, O, X, O...
+    startingPlayer = startingPlayer == 'X' ? 'O' : 'X';
+    currentPlayer = startingPlayer;
   }
 }
